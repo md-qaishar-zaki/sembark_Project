@@ -1,0 +1,23 @@
+.add-btn {
+  padding: 12px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.qty-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.qty-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 6px;
+}

@@ -1,13 +1,67 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { getCategories, getProducts } from "../../services/api";
+import {
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+import {
+  Link,
+  useSearchParams,
+} from "react-router-dom";
+import {
+  getCategories,
+  getProducts,
+} from "../../services/api";
+import { useCart } from "../../context/CartContext";
 import "./Home.css";
 
 const Home = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [sort, setSort] = useState("");
+
+  const {
+    cartItems,
+    addToCart,
+    decreaseQuantity,
+  } = useCart();
+
+  const [searchParams, setSearchParams] =
+    useSearchParams();
+
+  const selectedCategory =
+    searchParams.get("category") || "";
+
+  const sort =
+    searchParams.get("sort") || "";
+
+  const loadCategories = async () => {
+    try {
+      const data = await getCategories();
+      setCategories(data);
+    } catch (error) {
+      console.error(
+        "Error loading categories:",
+        error
+      );
+    }
+  };
+
+  const loadProducts = useCallback(async () => {
+    try {
+      const data = await getProducts(
+        selectedCategory
+          ? Number(selectedCategory)
+          : undefined,
+        sort
+      );
+
+      setProducts(data);
+    } catch (error) {
+      console.error(
+        "Error loading products:",
+        error
+      );
+    }
+  }, [selectedCategory, sort]);
 
   useEffect(() => {
     loadCategories();
@@ -15,20 +69,46 @@ const Home = () => {
 
   useEffect(() => {
     loadProducts();
-  }, [selectedCategory, sort]);
+  }, [loadProducts]);
 
-  const loadCategories = async () => {
-    const data = await getCategories();
-    setCategories(data);
-  };
-
-  const loadProducts = async () => {
-    const data = await getProducts(
-      selectedCategory ? Number(selectedCategory) : undefined,
-      sort
+  const handleCategoryChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const params = new URLSearchParams(
+      searchParams
     );
 
-    setProducts(data);
+    if (e.target.value) {
+      params.set("category", e.target.value);
+    } else {
+      params.delete("category");
+    }
+
+    setSearchParams(params);
+  };
+
+  const handleSortChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const params = new URLSearchParams(
+      searchParams
+    );
+
+    if (e.target.value) {
+      params.set("sort", e.target.value);
+    } else {
+      params.delete("sort");
+    }
+
+    setSearchParams(params);
+  };
+
+  const getQuantity = (id: number) => {
+    const item = cartItems.find(
+      (item) => item.id === id
+    );
+
+    return item ? item.quantity : 0;
   };
 
   return (
@@ -38,12 +118,17 @@ const Home = () => {
       <div className="filters">
         <select
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={handleCategoryChange}
         >
-          <option value="">All Categories</option>
+          <option value="">
+            All Categories
+          </option>
 
           {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
+            <option
+              key={cat.id}
+              value={cat.id}
+            >
               {cat.name}
             </option>
           ))}
@@ -51,12 +136,16 @@ const Home = () => {
 
         <select
           value={sort}
-          onChange={(e) => setSort(e.target.value)}
+          onChange={handleSortChange}
         >
-          <option value="">Sort</option>
+          <option value="">
+            Sort
+          </option>
+
           <option value="lowToHigh">
             Price Low To High
           </option>
+
           <option value="highToLow">
             Price High To Low
           </option>
@@ -65,20 +154,78 @@ const Home = () => {
 
       <div className="product-grid">
         {products.map((product) => (
-          <Link
+          <div
             key={product.id}
-            to={`/product/${product.id}`}
             className="card"
           >
-            <img
-              src={product.images?.[0]}
-              alt={product.title}
-            />
+            <Link
+              to={`/product/${product.id}/details`}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <img
+                src={product.images?.[0]}
+                alt={product.title}
+              />
 
-            <h3>{product.title}</h3>
+              <h3>{product.title}</h3>
 
-            <p>₹ {product.price}</p>
-          </Link>
+              <p>₹ {product.price}</p>
+            </Link>
+
+            {getQuantity(product.id) === 0 ? (
+              <button
+                className="add-btn"
+                onClick={() =>
+                  addToCart({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image:
+                      product.images?.[0] || "",
+                    quantity: 1,
+                  })
+                }
+              >
+                Add To Cart
+              </button>
+            ) : (
+              <div className="qty-box">
+                <button
+                  className="qty-btn"
+                  onClick={() =>
+                    decreaseQuantity(
+                      product.id
+                    )
+                  }
+                >
+                  -
+                </button>
+
+                <span>
+                  {getQuantity(product.id)}
+                </span>
+
+                <button
+                  className="qty-btn"
+                  onClick={() =>
+                    addToCart({
+                      id: product.id,
+                      title: product.title,
+                      price: product.price,
+                      image:
+                        product.images?.[0] || "",
+                      quantity: 1,
+                    })
+                  }
+                >
+                  +
+                </button>
+              </div>
+            )}
+          </div>
         ))}
       </div>
     </div>

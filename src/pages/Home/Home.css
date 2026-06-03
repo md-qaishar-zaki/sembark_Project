@@ -34,3 +34,57 @@
   height: 200px;
   object-fit: cover;
 }
+
+.add-btn,
+.remove-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.add-btn {
+  background: #28a745;
+  color: #fff;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: #fff;
+}
+
+.add-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #28a745;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.qty-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.qty-btn {
+  width: 35px;
+  height: 35px;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+.qty-box span {
+  font-size: 18px;
+  font-weight: bold;
+}
