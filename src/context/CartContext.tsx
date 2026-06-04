@@ -31,7 +31,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // ✅ 1. Load cart on first mount
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem("cart");
@@ -43,35 +42,27 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       console.error("Error loading cart:", error);
       localStorage.removeItem("cart");
     }
-
     setIsLoaded(true);
   }, []);
 
-  // ✅ 2. Save cart only after initial load
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem("cart", JSON.stringify(cartItems));
     }
   }, [cartItems, isLoaded]);
 
-  // ✅ Add to cart
   const addToCart = (product: CartItem) => {
     setCartItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
-
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
       }
 
       return [...prev, { ...product, quantity: 1 }];
     });
   };
 
-  // ✅ Decrease quantity
   const decreaseQuantity = (id: number) => {
     setCartItems((prev) =>
       prev
@@ -84,14 +75,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     );
   };
 
-  // ✅ Remove item completely
   const removeFromCart = (id: number) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
     <CartContext.Provider
-      value={{
+      value={{ 
         cartItems,
         addToCart,
         removeFromCart,
@@ -101,9 +91,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       {children}
     </CartContext.Provider>
   );
-};
+}; 
 
-// ✅ Hook
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);
 

@@ -19,14 +19,8 @@ const Header: React.FC = () => {
 
       <nav className="header-nav">
         <Link to="/">Home</Link>
-
-        <Link
-          to="/cart"
-          className="cart-link"
-        >
-          🛒 Cart
-
-          <span className="cart-count">
+        <Link to="/cart" className="cart-link" >
+          🛒 Cart <span className="cart-count">
             {totalItems}
           </span>
         </Link>

@@ -1,16 +1,6 @@
-import {
-  useEffect,
-  useState,
-  useCallback,
-} from "react";
-import {
-  Link,
-  useSearchParams,
-} from "react-router-dom";
-import {
-  getCategories,
-  getProducts,
-} from "../../services/api";
+import { useEffect, useState, useCallback, } from "react";
+import { Link, useSearchParams, } from "react-router-dom";
+import { getCategories, getProducts, } from "../../services/api";
 import { useCart } from "../../context/CartContext";
 import "./Home.css";
 
@@ -24,15 +14,9 @@ const Home = () => {
     decreaseQuantity,
   } = useCart();
 
-  const [searchParams, setSearchParams] =
-    useSearchParams();
-
-  const selectedCategory =
-    searchParams.get("category") || "";
-
-  const sort =
-    searchParams.get("sort") || "";
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedCategory = searchParams.get("category") || "";
+  const sort = searchParams.get("sort") || "";
   const loadCategories = async () => {
     try {
       const data = await getCategories();
@@ -48,28 +32,20 @@ const Home = () => {
   const loadProducts = useCallback(async () => {
     try {
       const data = await getProducts(
-        selectedCategory
-          ? Number(selectedCategory)
-          : undefined,
-        sort
+        selectedCategory ? Number(selectedCategory) : undefined, sort
       );
-
       setProducts(data);
-    } catch (error) {
+    }
+    catch (error) {
       console.error(
-        "Error loading products:",
-        error
+        "Error loading products:", error
       );
     }
   }, [selectedCategory, sort]);
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
+  useEffect(() => { loadCategories(); }, []);
 
-  useEffect(() => {
-    loadProducts();
-  }, [loadProducts]);
+  useEffect(() => { loadProducts(); }, [loadProducts]);
 
   const handleCategoryChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -83,7 +59,6 @@ const Home = () => {
     } else {
       params.delete("category");
     }
-
     setSearchParams(params);
   };
 
@@ -93,13 +68,11 @@ const Home = () => {
     const params = new URLSearchParams(
       searchParams
     );
-
     if (e.target.value) {
       params.set("sort", e.target.value);
     } else {
       params.delete("sort");
     }
-
     setSearchParams(params);
   };
 
@@ -107,68 +80,36 @@ const Home = () => {
     const item = cartItems.find(
       (item) => item.id === id
     );
-
     return item ? item.quantity : 0;
   };
 
   return (
     <div className="container">
       <h1>Products</h1>
-
       <div className="filters">
-        <select
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-        >
+        <select value={selectedCategory} onChange={handleCategoryChange} >
           <option value="">
             All Categories
           </option>
 
           {categories.map((cat) => (
-            <option
-              key={cat.id}
-              value={cat.id}
-            >
+            <option key={cat.id} value={cat.id} >
               {cat.name}
             </option>
           ))}
         </select>
 
-        <select
-          value={sort}
-          onChange={handleSortChange}
-        >
-          <option value="">
-            Sort
-          </option>
-
-          <option value="lowToHigh">
-            Price Low To High
-          </option>
-
-          <option value="highToLow">
-            Price High To Low
-          </option>
+        <select value={sort} onChange={handleSortChange} >
+          <option value=""> Sort </option>
+          <option value="lowToHigh"> Price Low To High </option>
+          <option value="highToLow"> Price High To Low </option>
         </select>
       </div>
-
       <div className="product-grid">
         {products.map((product) => (
-          <div
-            key={product.id}
-            className="card"
-          >
-            <Link
-              to={`/product/${product.id}/details`}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-              }}
-            >
-              <img
-                src={product.images?.[0]}
-                alt={product.title}
-              />
+          <div key={product.id} className="card" >
+            <Link to={`/product/${product.id}/details`}>
+              <img src={product.images?.[0]} alt={product.title} />
               <div className="titleBox">
                 <h3>{product.title}</h3>
               </div>
@@ -179,41 +120,32 @@ const Home = () => {
                 <p>₹{product.price}</p>
               </div>
               {getQuantity(product.id) === 0 ? (
-                <button
-                  className="add-btn"
-                  onClick={() =>
-                    addToCart({
-                      id: product.id,
-                      title: product.title,
-                      price: product.price,
-                      image:
-                        product.images?.[0] || "",
-                      quantity: 1,
-                    })
-                  }
-                >
-                  Add To Cart
+                <button className="add-btn" onClick={() =>
+                  addToCart({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image:
+                      product.images?.[0] || "",
+                    quantity: 1,
+                  })
+                }
+                > Add To Cart
                 </button>
               ) : (
                 <div className="qty-box">
-                  <button
-                    className="qty-btn"
-                    onClick={() =>
-                      decreaseQuantity(
-                        product.id
-                      )
-                    }
-                  >
-                    -
-                  </button>
+                  <button className="qty-btn" onClick={() =>
+                    decreaseQuantity(
+                      product.id
+                    )
+                  }
+                  > - </button>
 
                   <span>
                     {getQuantity(product.id)}
                   </span>
 
-                  <button
-                    className="qty-btn"
-                    onClick={() =>
+                  <button className="qty-btn" onClick={() =>
                       addToCart({
                         id: product.id,
                         title: product.title,
@@ -223,9 +155,7 @@ const Home = () => {
                         quantity: 1,
                       })
                     }
-                  >
-                    +
-                  </button>
+                  > + </button>
                 </div>
               )}
             </div>

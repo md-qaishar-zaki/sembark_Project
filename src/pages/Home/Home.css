@@ -172,3 +172,9 @@ select::-ms-expand {
   transform: scale(1.2);
   transition: 0.3s;
 }
+
+.product-grid Link,
+.product-grid a {
+  text-Decoration: none;
+  color: inherit;
+}
