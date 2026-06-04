@@ -1,0 +1,55 @@
+.mainCart {
+    max-Width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.Products {
+    display: flex;
+    align-Items: center;
+    gap: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-Bottom: 15px;
+    border-Radius: 8px;
+}
+
+img {
+    object-Fit: cover;
+    border-Radius: 8px;
+}
+
+.Flex {
+    flex: 1 1 0%;
+}
+
+.BTNS {
+    display: flex;
+    align-Items: center;
+    gap: 10px;
+    margin-Top: 10px;
+}
+
+.RemoveBTN {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-Radius: 6px;
+}
+
+.Pay {
+    background: green !important;
+    margin-left: 12px; 
+}
+
+.totalPrice {
+    display: flex;
+    align-items: center;
+}
+
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+}

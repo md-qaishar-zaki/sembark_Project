@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { getProducts } from "../../services/api";
 import { useCart } from "../../context/CartContext";
+import './ProductDetail.css'
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams();
@@ -47,43 +48,28 @@ const ProductDetail: React.FC = () => {
 
   if (!product) {
     return (
-      <div
-        style={{
-          padding: "20px",
-        }}
-      >
-        Loading...
+      <div className="main">
+        <div className="card-loader">
+          <div className="skeleton loader-image"></div>
+
+          <div className="loader-content">
+            <div className="skeleton loader-title"></div>
+            <div className="skeleton loader-price"></div>
+            <div className="skeleton loader-text"></div>
+            <div className="skeleton loader-text"></div>
+            <div className="skeleton loader-text"></div>
+            <div className="skeleton loader-text short"></div>
+            <div className="skeleton loader-button"></div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "30px auto",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          gap: "40px",
-          flexWrap: "wrap",
-        }}
-      >
-        <div>
-          <img
-            src={product.images?.[0]}
-            alt={product.title}
-            style={{
-              width: "400px",
-              maxWidth: "100%",
-              borderRadius: "10px",
-            }}
-          />
-        </div>
-
+    <div className="main">
+      <div className="gridBox">
+        <img src={product.images?.[0]} alt={product.title} />
         <div
           style={{
             flex: 1,
@@ -92,7 +78,8 @@ const ProductDetail: React.FC = () => {
           <h1>{product.title}</h1>
 
           <h2>
-            ₹ {product.price}
+            <del>₹{product.price + 49}</del>
+            ₹{product.price}
           </h2>
 
           <p
@@ -104,13 +91,9 @@ const ProductDetail: React.FC = () => {
             {product.description}
           </p>
 
-          <div
-            style={{
-              marginTop: "25px",
-            }}
-          >
+          <div className="mt">
             {getQuantity(product.id) ===
-            0 ? (
+              0 ? (
               <button
                 className="add-btn"
                 onClick={() =>

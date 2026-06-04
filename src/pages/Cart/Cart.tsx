@@ -1,5 +1,6 @@
 import React from "react";
 import { useCart } from "../../context/CartContext";
+import './Cart.css'
 
 const Cart: React.FC = () => {
   const {
@@ -21,103 +22,41 @@ const Cart: React.FC = () => {
   );
 
   return (
-    <div
-      style={{
-        maxWidth: "1000px",
-        margin: "20px auto",
-        padding: "20px",
-      }}
-    >
+    <div className="mainCart">
       <h1>Shopping Cart</h1>
-
-      <h3>Total Items: {totalItems}</h3>
-
-      <h3>Total Price: ₹ {totalPrice}</h3>
+      <div className="d-flex">
+        <h3>Total Items: {totalItems}</h3>
+        <div className="totalPrice">
+          <h3>Total Price: ₹ {totalPrice}</h3>
+          <button className="RemoveBTN Pay">Pay</button>
+        </div>
+      </div>
 
       {cartItems.length === 0 ? (
         <h2>Your cart is empty</h2>
       ) : (
         cartItems.map((item) => (
-          <div
-            key={item.id}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-              border: "1px solid #ddd",
-              padding: "15px",
-              marginBottom: "15px",
-              borderRadius: "8px",
-            }}
-          >
-            <img
-              src={item.image}
-              alt={item.title}
-              width={120}
-              height={120}
-              style={{
-                objectFit: "cover",
-                borderRadius: "8px",
-              }}
-            />
+          <div className="Products" key={item.id} >
+            <img src={item.image} alt={item.title} width={120} height={120} />
 
-            <div style={{ flex: 1 }}>
+            <div className="Flex">
               <h3>{item.title}</h3>
-
               <p>Price: ₹ {item.price}</p>
-
               <p>
                 Subtotal: ₹{" "}
                 {item.price * item.quantity}
               </p>
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  marginTop: "10px",
-                }}
-              >
-                <button
-                  onClick={() =>
-                    decreaseQuantity(item.id)
-                  }
-                >
-                  -
-                </button>
-
-                <span
-                  style={{
-                    fontWeight: "bold",
-                  }}
-                >
-                  {item.quantity}
+              <div className="BTNS">
+                <button onClick={() => decreaseQuantity(item.id)} > - </button>
+                <span >
+                  <b>{item.quantity}</b>
                 </span>
-
-                <button
-                  onClick={() =>
-                    addToCart(item)
-                  }
-                >
-                  +
-                </button>
+                <button onClick={() => addToCart(item)} > + </button>
               </div>
             </div>
 
-            <button
-              onClick={() =>
-                removeFromCart(item.id)
-              }
-              style={{
-                background: "#dc3545",
-                color: "#fff",
-                border: "none",
-                padding: "10px 16px",
-                cursor: "pointer",
-                borderRadius: "6px",
-              }}
-            >
+            <button className="RemoveBTN" onClick={() => removeFromCart(item.id)}>
               Remove
             </button>
           </div>
