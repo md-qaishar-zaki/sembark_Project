@@ -169,47 +169,18 @@ const Home = () => {
                 src={product.images?.[0]}
                 alt={product.title}
               />
-
-              <h3>{product.title}</h3>
-
-              <p>₹ {product.price}</p>
+              <div className="titleBox">
+                <h3>{product.title}</h3>
+              </div>
             </Link>
-
-            {getQuantity(product.id) === 0 ? (
-              <button
-                className="add-btn"
-                onClick={() =>
-                  addToCart({
-                    id: product.id,
-                    title: product.title,
-                    price: product.price,
-                    image:
-                      product.images?.[0] || "",
-                    quantity: 1,
-                  })
-                }
-              >
-                Add To Cart
-              </button>
-            ) : (
-              <div className="qty-box">
+            <div className="itemFooter">
+              <div className="priceSection">
+                <del>₹{product.price + 49}</del>
+                <p>₹{product.price}</p>
+              </div>
+              {getQuantity(product.id) === 0 ? (
                 <button
-                  className="qty-btn"
-                  onClick={() =>
-                    decreaseQuantity(
-                      product.id
-                    )
-                  }
-                >
-                  -
-                </button>
-
-                <span>
-                  {getQuantity(product.id)}
-                </span>
-
-                <button
-                  className="qty-btn"
+                  className="add-btn"
                   onClick={() =>
                     addToCart({
                       id: product.id,
@@ -221,10 +192,43 @@ const Home = () => {
                     })
                   }
                 >
-                  +
+                  Add To Cart
                 </button>
-              </div>
-            )}
+              ) : (
+                <div className="qty-box">
+                  <button
+                    className="qty-btn"
+                    onClick={() =>
+                      decreaseQuantity(
+                        product.id
+                      )
+                    }
+                  >
+                    -
+                  </button>
+
+                  <span>
+                    {getQuantity(product.id)}
+                  </span>
+
+                  <button
+                    className="qty-btn"
+                    onClick={() =>
+                      addToCart({
+                        id: product.id,
+                        title: product.title,
+                        price: product.price,
+                        image:
+                          product.images?.[0] || "",
+                        quantity: 1,
+                      })
+                    }
+                  >
+                    +
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>

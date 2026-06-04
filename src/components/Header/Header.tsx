@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-logo">
-        <Link to="/">🛍️ MyShop</Link>
+        <Link to="/">🛍️ SEMBARK</Link>
       </div>
 
       <nav className="header-nav">

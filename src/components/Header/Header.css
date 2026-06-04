@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 32px;
-  background-color: #2874f0;
+  background-color: #141414;
   color: white;
   position: sticky;
   top: 0;
@@ -16,6 +16,7 @@
   text-decoration: none;
   font-size: 24px;
   font-weight: bold;
+  font-family: cursive;
 }
 
 .header-nav {
