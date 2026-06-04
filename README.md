@@ -1,4 +1,4 @@
-# MyShop - React TypeScript E-Commerce App
+# sembark - React TypeScript E-Commerce App
 
 A simple e-commerce application built with React, TypeScript, and React Router.
 
